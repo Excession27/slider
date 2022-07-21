@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400&display=swap');
+
+.swiper-wrapper {
+  font-family: "Poppins";
+}
+
 .swiper-container {
   width: 100%;
   max-width: 100%;
@@ -39,16 +45,39 @@
   background-color: #777777;
 }
 
-.text-box {
-  padding: 15px;
-  background-color: cornflowerblue;
+.text-box-div {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 15px;
   position: absolute;
+  text-align: center;
   left: -150px;
   top: 100px;
 }
 
-.swiper-container {
-  position: relative;
+.text-box {
+
+  width: 200px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 15px;
+
+
+  color: white;
+  text-align: left;
+
+  background-color: cornflowerblue;
+
+}
+
+.text-box-animate {
+  transition-property: opacity;
+  transition-duration: 1s;
+  transition-delay: 150ms;
+
+  padding-bottom: 15px;
+
+
 }
 
 .swiper {
