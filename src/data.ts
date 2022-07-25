@@ -50,3 +50,21 @@ export const thirdSliderData = [
     description: "AirBnb logo animation",
   },
 ];
+
+export const firstTitle = {
+  tag: "Features",
+  main: "Take a closer look at our brand new head office",
+  description: "Designed to make you sleep better",
+};
+
+export const secondTitle = {
+  tag: "Features",
+  main: "Take a closer look at our brand new head office",
+  description: "Designed to make you sleep better",
+};
+
+export const thirdTitle = {
+  tag: "Features",
+  main: "We create amazing & invoative brand standards. Give us a call, we can help",
+  description: "Designed to make you sleep better",
+};

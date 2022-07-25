@@ -1,0 +1,38 @@
+.title-wrapper-left, .title-wrapper-right {
+    padding: 0 3.12rem 0 0;
+    flex-shrink: 1;
+}
+
+.title-wrapper-center {
+    padding: 0;
+    text-align: center;
+
+}
+
+.title-wrapper {
+    font-weight: 700;
+    margin-bottom: 1.88rem;
+}
+
+.title-wrapper>* {
+    margin: 0 0 0.3rem 0;
+}
+
+.title__tag {
+    color: #6772e5;
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+.title__main {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+}
+
+.title__description {
+    font-size: 1rem;
+    line-height: 1.38rem;
+    font-style: italic;
+    font-weight: 300;
+    color: #444;
+}

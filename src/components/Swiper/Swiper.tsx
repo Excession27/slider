@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { getRefValue, useStateRef } from "components/Swiper/lib/hooks";
 import { getTouchEventData } from "components/Swiper/lib/dom";
 import { SwiperItemType, SwiperPropsType } from "components/Swiper/lib/types";
@@ -6,6 +6,7 @@ import SwiperItem from "components/Swiper/SwiperItem/SwiperItem";
 
 import "./Swiper.css";
 import Title from "./Title/Title";
+import { count } from "console";
 
 export type Props = {
   items: SwiperItemType[];
@@ -14,16 +15,32 @@ export type Props = {
 
 const MIN_SWIPE_REQUIRED = 40;
 
-function Swiper({ swiperItems, swiperWidth, layout }: SwiperPropsType) {
+function Swiper({ swiperItems, swiperWidth, layout, title }: SwiperPropsType) {
   const containerRef = useRef<HTMLUListElement>(null);
   const containerWidthRef = useRef(0);
   const minOffsetXRef = useRef(0);
   const currentOffsetXRef = useRef(0);
   const startXRef = useRef(0);
   const textBox = useRef<any>();
+  // const textDiv = useRef<any>();
   const [offsetX, setOffsetX, offsetXRef] = useStateRef(0);
   const [isSwiping, setIsSwiping] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
+  const [prevHeight, setPrevHeight] = useState();
+  const [sliderContent, setSliderContent] = useState("");
+
+  useEffect(() => {
+    setSliderContent(swiperItems[currentIdx].description);
+  }, [currentIdx, swiperItems]);
+
+  useEffect(() => {
+    if (sliderContent) {
+      textBox.current.classList.add("text-p-animate");
+      setTimeout(() => {
+        setPrevHeight(textBox?.current.clientHeight);
+      }, 200);
+    }
+  }, [sliderContent]);
 
   const onTouchMove = (e: TouchEvent | MouseEvent) => {
     const currentX = getTouchEventData(e).clientX;
@@ -67,7 +84,6 @@ function Swiper({ swiperItems, swiperWidth, layout }: SwiperPropsType) {
     setIsSwiping(false);
     setOffsetX(newOffsetX);
     setCurrentIdx(Math.abs(newOffsetX / containerWidth));
-    animateTextBox();
 
     window.removeEventListener("touchend", onTouchEnd);
     window.removeEventListener("touchmove", onTouchMove);
@@ -101,28 +117,22 @@ function Swiper({ swiperItems, swiperWidth, layout }: SwiperPropsType) {
     setOffsetX(-(containerWidth * idx));
   };
 
-  const animateTextBox = () => {
-    textBox.current.classList.remove("text-box-animate");
-    setTimeout(() => {
-      console.log("timeout");
-
-      textBox.current.classList.add("text-box-animate");
-    }, 10);
-  };
-
   return (
-    <div className="swiper-wrapper">
+    <div
+      style={{ width: swiperWidth }}
+      className={`swiper-wrapper swiper-wrapper-${layout}`}
+    >
       <Title
-        tag={"features"}
-        main={"Take a closer look at our brand new head office"}
-        description={"Designed to make you sleep better"}
+        tag={title.tag}
+        main={title.main}
+        description={title.description}
+        layout={layout}
       />
       <div className="swiper">
         <div
           className="swiper-container"
           onTouchStart={onTouchStart}
           onMouseDown={onTouchStart}
-          style={{ width: swiperWidth }}
         >
           <ul
             ref={containerRef}
@@ -146,14 +156,29 @@ function Swiper({ swiperItems, swiperWidth, layout }: SwiperPropsType) {
             ))}
           </ul>
         </div>
-        <div className="text-box-div">
-          <p className="text-box" ref={textBox} key={`desc-${currentIdx}`}>
-            {swiperItems[currentIdx].description}
-          </p>
+        <div className={`text-wrapper-${layout}`}>
+          <div className="text-div" style={{ height: `${prevHeight}px` }}>
+            <p
+              id="textBox"
+              className="text-box"
+              ref={textBox}
+              key={`desc-${currentIdx}`}
+            >
+              {/* {swiperDesc} */}
+              {sliderContent}
+            </p>
+          </div>
         </div>
 
-        <span className="swiper-number-indicator">
-          0{currentIdx + 1}/0{swiperItems.length}
+        <span
+          className={`swiper-indicator-numbers swiper-indicator-numbers-${layout}`}
+        >
+          {`${currentIdx + 1 < 10 ? `0${currentIdx + 1}` : currentIdx + 1} `}/
+          {` ${
+            swiperItems.length < 10
+              ? `0${swiperItems.length}`
+              : swiperItems.length
+          }`}
         </span>
       </div>
     </div>

@@ -3,16 +3,19 @@ export type SwiperItemType = {
   description: string;
 };
 
-type TitleType = {
+export type TitleType = {
   tag: string;
   main: string;
   description: string;
 };
 
-export type SwiperPropsType = {
+export type LayoutType = {
+  layout: "left" | "center" | "right";
+};
+
+export type SwiperPropsType = LayoutType & {
   swiperItems: SwiperItemType[];
   title: TitleType;
-  layout: "left" | "center" | "right";
   swiperWidth: number;
   autoplay?: boolean;
 };

@@ -1,7 +1,50 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400&display=swap');
 
+
+
 .swiper-wrapper {
   font-family: "Poppins";
+  display: flex;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.swiper-wrapper-center {
+
+  justify-content: center;
+  flex-flow: column nowrap;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.swiper-wrapper-right {
+  justify-content: space-between;
+  flex-flow: row;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: auto;
+  padding-bottom: auto;
+  flex-shrink: 1;
+  align-items: center;
+
+}
+
+.swiper-wrapper-left {
+  justify-content: space-between;
+  flex-flow: row-reverse;
+  margin-left: 12%;
+  margin-right: auto;
+  height: 390px;
+  flex-shrink: 0;
+}
+
+.swiper-wrapper-right>.swiper, .swiper-wrapper-left>.swiper {
+  width: 58%;
+}
+
+.swiper-wrapper-right>.title-wrapper, .swiper-wrapper-left>.title-wrapper {
+  width: 42%;
 }
 
 .swiper-container {
@@ -33,9 +76,9 @@
 }
 
 .swiper-indicator-item {
-  width: 12px;
-  height: 12px;
-  margin: 0 4px;
+  width: 8px;
+  height: 8px;
+  margin: 0 7% 0 0;
   border-radius: 50%;
   background-color: #cccccc;
   cursor: pointer;
@@ -45,41 +88,76 @@
   background-color: #777777;
 }
 
-.text-box-div {
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 15px;
+.text-wrapper-center, .text-wrapper-left {
+  left: -130px;
+  top: 50px;
   position: absolute;
-  text-align: center;
-  left: -150px;
-  top: 100px;
+}
+
+.text-wrapper-right {
+  right: 40px;
+  top: 50px;
+  position: absolute;
+}
+
+.text-div {
+  width: 230px;
+  background-color: cornflowerblue;
+  transition: 1s;
+  height: 15px;
+}
+
+.text-div-animate {
+
+  transition-delay: 200ms;
+
 }
 
 .text-box {
-
-  width: 200px;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 15px;
-
-
+  margin: 0;
+  opacity: 0;
+  padding: 35px 25px;
+  transition: 1s;
   color: white;
-  text-align: left;
-
-  background-color: cornflowerblue;
-
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: bold;
 }
 
-.text-box-animate {
-  transition-property: opacity;
-  transition-duration: 1s;
-  transition-delay: 150ms;
-
-  padding-bottom: 15px;
-
-
+.text-p-animate {
+  transition-delay: 600ms;
+  opacity: 1;
 }
 
 .swiper {
   position: relative;
+}
+
+.swiper-indicator-numbers {
+  display: inline-flex;
+  margin: 0;
+  padding: 0;
+  font-size: 1.25rem;
+  transform: rotate(270deg);
+  position: relative;
+  left: -50px;
+  top: -200px;
+  font-style: italic;
+  color: #444;
+  line-height: 1.6rem;
+}
+
+.swiper-indicator-numbers-center {
+  left: -50px;
+  top: -200px;
+}
+
+.swiper-indicator-numbers-right {
+  left: 527px;
+  top: -150px;
+}
+
+.swiper-indicator-numbers-center {
+  left: -50px;
+  top: -150px;
 }
