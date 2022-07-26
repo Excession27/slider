@@ -6,7 +6,6 @@ import SwiperItem from "components/Swiper/SwiperItem/SwiperItem";
 
 import "./Swiper.css";
 import Title from "./Title/Title";
-import { count } from "console";
 
 export type Props = {
   items: SwiperItemType[];
@@ -15,14 +14,19 @@ export type Props = {
 
 const MIN_SWIPE_REQUIRED = 40;
 
-function Swiper({ swiperItems, swiperWidth, layout, title }: SwiperPropsType) {
+function Swiper({
+  swiperItems,
+  swiperWidth,
+  layout,
+  title,
+  autoplay,
+}: SwiperPropsType) {
   const containerRef = useRef<HTMLUListElement>(null);
   const containerWidthRef = useRef(0);
   const minOffsetXRef = useRef(0);
   const currentOffsetXRef = useRef(0);
   const startXRef = useRef(0);
   const textBox = useRef<any>();
-  // const textDiv = useRef<any>();
   const [offsetX, setOffsetX, offsetXRef] = useStateRef(0);
   const [isSwiping, setIsSwiping] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -30,17 +34,33 @@ function Swiper({ swiperItems, swiperWidth, layout, title }: SwiperPropsType) {
   const [sliderContent, setSliderContent] = useState("");
 
   useEffect(() => {
-    setSliderContent(swiperItems[currentIdx].description);
-  }, [currentIdx, swiperItems]);
-
-  useEffect(() => {
     if (sliderContent) {
-      textBox.current.classList.add("text-p-animate");
       setTimeout(() => {
+        textBox.current.classList.add("text-p-animate");
         setPrevHeight(textBox?.current.clientHeight);
       }, 200);
     }
   }, [sliderContent]);
+
+  useEffect(() => {
+    setSliderContent(swiperItems[currentIdx].description);
+  }, [currentIdx, swiperItems]);
+
+  useEffect(() => {
+    let counter = 0;
+    if (autoplay && !isSwiping) {
+      const interval = setInterval(() => {
+        if (counter > swiperItems.length - 1) {
+          counter = 0;
+        }
+        indicatorOnClick(counter);
+
+        setCurrentIdx(counter);
+        counter++;
+      }, 2000);
+      return () => clearInterval(interval);
+    }
+  }, []);
 
   const onTouchMove = (e: TouchEvent | MouseEvent) => {
     const currentX = getTouchEventData(e).clientX;
@@ -112,10 +132,25 @@ function Swiper({ swiperItems, swiperWidth, layout, title }: SwiperPropsType) {
   const indicatorOnClick = (idx: number) => {
     const containerEl = getRefValue(containerRef);
     const containerWidth = containerEl.offsetWidth;
+    console.log("indicator", idx);
 
     setCurrentIdx(idx);
     setOffsetX(-(containerWidth * idx));
   };
+
+  // useEffect(() => {
+  //   if (autoplay) {
+  //     const iv = setTimeout(() => {
+  //       console.log(currentIdx, "before pass");
+  //       indicatorOnClick(currentIdx);
+  //       const newIdx =
+  //         currentIdx === swiperItems.length - 1 ? 0 : currentIdx + 1;
+  //       setCurrentIdx(newIdx);
+  //       console.log(currentIdx, "after pass", newIdx, "nIdx");
+  //     }, 2000);
+  //     return () => clearTimeout(iv);
+  //   }
+  // });
 
   return (
     <div
@@ -164,7 +199,6 @@ function Swiper({ swiperItems, swiperWidth, layout, title }: SwiperPropsType) {
               ref={textBox}
               key={`desc-${currentIdx}`}
             >
-              {/* {swiperDesc} */}
               {sliderContent}
             </p>
           </div>

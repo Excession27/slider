@@ -15,9 +15,22 @@ function App() {
       <Swiper
         swiperItems={firstSliderData}
         swiperWidth={1140}
-        layout={"right"}
+        layout={"center"}
         title={firstTitle}
         autoplay={true}
+      />
+      <Swiper
+        swiperItems={secondSliderData}
+        swiperWidth={1300}
+        layout={"right"}
+        title={secondTitle}
+      />
+      <Swiper
+        swiperItems={thirdSliderData}
+        swiperWidth={1440}
+        layout={"left"}
+        title={thirdTitle}
+        autoplay={false}
       />
     </div>
   );

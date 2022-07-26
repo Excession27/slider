@@ -1,7 +1,12 @@
-.title-wrapper-left, .title-wrapper-right {
+.title-wrapper-right {
     padding: 0 3.12rem 0 0;
     flex-shrink: 1;
 }
+
+.title-wrapper-left {
+    padding: 0 0 0 3.12rem;
+}
+
 
 .title-wrapper-center {
     padding: 0;

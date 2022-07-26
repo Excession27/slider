@@ -18,33 +18,29 @@
 
 }
 
-.swiper-wrapper-right {
+.swiper-wrapper-right, .swiper-wrapper-left {
   justify-content: space-between;
   flex-flow: row;
   margin-left: auto;
   margin-right: auto;
-  padding-top: auto;
-  padding-bottom: auto;
-  flex-shrink: 1;
   align-items: center;
 
 }
 
 .swiper-wrapper-left {
-  justify-content: space-between;
   flex-flow: row-reverse;
-  margin-left: 12%;
-  margin-right: auto;
-  height: 390px;
-  flex-shrink: 0;
+}
+
+.swiper {
+  position: relative;
 }
 
 .swiper-wrapper-right>.swiper, .swiper-wrapper-left>.swiper {
-  width: 58%;
+  width: 55%;
 }
 
 .swiper-wrapper-right>.title-wrapper, .swiper-wrapper-left>.title-wrapper {
-  width: 42%;
+  width: 45%;
 }
 
 .swiper-container {
@@ -88,29 +84,60 @@
   background-color: #777777;
 }
 
+
+
+.swiper-indicator-numbers {
+  display: inline-flex;
+  margin: 0;
+  padding: 0;
+  font-size: 1.25rem;
+  transform: rotate(270deg);
+  position: relative;
+  font-style: italic;
+  color: #444;
+  line-height: 1.6rem;
+}
+
+.swiper-indicator-numbers-center {
+  left: -50px;
+  top: -200px;
+}
+
+.swiper-indicator-numbers-right {
+  position: absolute;
+  right: -50px;
+  top: 60%;
+}
+
+.swiper-indicator-numbers-left {
+  position: absolute;
+  left: -50px;
+  top: 60%;
+}
+
+
+/* ===== Text Wrapper styles ===== */
 .text-wrapper-center, .text-wrapper-left {
   left: -130px;
-  top: 50px;
+  top: 10%;
   position: absolute;
 }
 
 .text-wrapper-right {
-  right: 40px;
-  top: 50px;
+  right: -130px;
+  top: 10%;
   position: absolute;
 }
 
 .text-div {
   width: 230px;
   background-color: cornflowerblue;
-  transition: 1s;
+  transition: height .3s ease-in-out, visibility .3s ease-in-out, opacity .3s ease-in-out;
   height: 15px;
 }
 
 .text-div-animate {
-
   transition-delay: 200ms;
-
 }
 
 .text-box {
@@ -129,35 +156,7 @@
   opacity: 1;
 }
 
-.swiper {
-  position: relative;
-}
 
-.swiper-indicator-numbers {
-  display: inline-flex;
-  margin: 0;
-  padding: 0;
-  font-size: 1.25rem;
-  transform: rotate(270deg);
-  position: relative;
-  left: -50px;
-  top: -200px;
-  font-style: italic;
-  color: #444;
-  line-height: 1.6rem;
-}
-
-.swiper-indicator-numbers-center {
-  left: -50px;
-  top: -200px;
-}
-
-.swiper-indicator-numbers-right {
-  left: 527px;
-  top: -150px;
-}
-
-.swiper-indicator-numbers-center {
-  left: -50px;
-  top: -150px;
-}
+/* 
+height .3s ease-in-out, visibility .3s ease-in-out, opacity .3s ease-in-out; 
+*/
