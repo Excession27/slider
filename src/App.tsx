@@ -14,23 +14,23 @@ function App() {
     <div className="container">
       <Swiper
         swiperItems={firstSliderData}
-        swiperWidth={1140}
+        swiperWidth={840}
         layout={"center"}
         title={firstTitle}
-        autoplay={true}
+        autoplay={{ isOn: true, delay: 2000 }}
       />
       <Swiper
         swiperItems={secondSliderData}
-        swiperWidth={1300}
+        swiperWidth={800}
         layout={"right"}
         title={secondTitle}
+        autoplay={{ isOn: true, delay: 1000 }}
       />
       <Swiper
         swiperItems={thirdSliderData}
         swiperWidth={1440}
         layout={"left"}
         title={thirdTitle}
-        autoplay={false}
       />
     </div>
   );

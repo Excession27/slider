@@ -17,5 +17,5 @@ export type SwiperPropsType = LayoutType & {
   swiperItems: SwiperItemType[];
   title: TitleType;
   swiperWidth: number;
-  autoplay?: boolean;
+  autoplay?: { isOn: boolean; delay: number };
 };

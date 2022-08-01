@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { getRefValue, useStateRef } from "components/Swiper/lib/hooks";
 import { getTouchEventData } from "components/Swiper/lib/dom";
 import { SwiperItemType, SwiperPropsType } from "components/Swiper/lib/types";
@@ -12,8 +12,6 @@ export type Props = {
   sliderWidth: number;
 };
 
-const MIN_SWIPE_REQUIRED = 40;
-
 function Swiper({
   swiperItems,
   swiperWidth,
@@ -21,54 +19,61 @@ function Swiper({
   title,
   autoplay,
 }: SwiperPropsType) {
+  const MIN_SWIPE_REQUIRED = swiperWidth * (layout === "center" ? 0.4 : 0.2);
   const containerRef = useRef<HTMLUListElement>(null);
   const containerWidthRef = useRef(0);
   const minOffsetXRef = useRef(0);
   const currentOffsetXRef = useRef(0);
   const startXRef = useRef(0);
-  const textBox = useRef<any>();
+  const textBox = useRef<HTMLParagraphElement>(null);
   const [offsetX, setOffsetX, offsetXRef] = useStateRef(0);
   const [isSwiping, setIsSwiping] = useState(false);
-  const [currentIdx, setCurrentIdx] = useState(0);
-  const [prevHeight, setPrevHeight] = useState();
+  const currentIdx = useRef<number>(0);
+  const [prevHeight, setPrevHeight] = useState<number | undefined>(0);
   const [sliderContent, setSliderContent] = useState("");
+
+  const indicatorOnClick = useCallback(
+    (idx: number) => {
+      const containerEl = getRefValue(containerRef);
+      const containerWidth = containerEl.offsetWidth;
+
+      currentIdx.current = idx;
+      setOffsetX(-(containerWidth * idx));
+    },
+    [setOffsetX]
+  );
 
   useEffect(() => {
     if (sliderContent) {
-      setTimeout(() => {
-        textBox.current.classList.add("text-p-animate");
-        setPrevHeight(textBox?.current.clientHeight);
-      }, 200);
+      textBox?.current?.classList.add("text-p-animate");
+      setPrevHeight(textBox?.current?.clientHeight);
     }
   }, [sliderContent]);
 
   useEffect(() => {
-    setSliderContent(swiperItems[currentIdx].description);
-  }, [currentIdx, swiperItems]);
+    setSliderContent(swiperItems[currentIdx.current].description);
+  }, [currentIdx.current, swiperItems]);
 
   useEffect(() => {
-    let counter = 0;
-    if (autoplay && !isSwiping) {
+    if (autoplay?.isOn && !isSwiping) {
       const interval = setInterval(() => {
-        if (counter > swiperItems.length - 1) {
-          counter = 0;
+        currentIdx.current = currentIdx.current + 1;
+        if (currentIdx.current > swiperItems.length - 1) {
+          currentIdx.current = 0;
         }
-        indicatorOnClick(counter);
-
-        setCurrentIdx(counter);
-        counter++;
-      }, 2000);
+        indicatorOnClick(currentIdx.current);
+      }, autoplay.delay);
       return () => clearInterval(interval);
     }
-  }, []);
+  }, [isSwiping, autoplay?.isOn, swiperItems.length, indicatorOnClick]);
 
   const onTouchMove = (e: TouchEvent | MouseEvent) => {
     const currentX = getTouchEventData(e).clientX;
     const diff = getRefValue(startXRef) - currentX;
     let newOffsetX = getRefValue(currentOffsetXRef) - diff;
 
-    const maxOffsetX = 0;
-    const minOffsetX = getRefValue(minOffsetXRef);
+    const maxOffsetX = MIN_SWIPE_REQUIRED;
+    const minOffsetX = getRefValue(minOffsetXRef) - MIN_SWIPE_REQUIRED;
 
     if (newOffsetX > maxOffsetX) {
       newOffsetX = maxOffsetX;
@@ -103,7 +108,7 @@ function Swiper({
 
     setIsSwiping(false);
     setOffsetX(newOffsetX);
-    setCurrentIdx(Math.abs(newOffsetX / containerWidth));
+    currentIdx.current = Math.abs(newOffsetX / containerWidth);
 
     window.removeEventListener("touchend", onTouchEnd);
     window.removeEventListener("touchmove", onTouchMove);
@@ -129,28 +134,6 @@ function Swiper({
     window.addEventListener("mousemove", onTouchMove);
     window.addEventListener("mouseup", onTouchEnd);
   };
-  const indicatorOnClick = (idx: number) => {
-    const containerEl = getRefValue(containerRef);
-    const containerWidth = containerEl.offsetWidth;
-    console.log("indicator", idx);
-
-    setCurrentIdx(idx);
-    setOffsetX(-(containerWidth * idx));
-  };
-
-  // useEffect(() => {
-  //   if (autoplay) {
-  //     const iv = setTimeout(() => {
-  //       console.log(currentIdx, "before pass");
-  //       indicatorOnClick(currentIdx);
-  //       const newIdx =
-  //         currentIdx === swiperItems.length - 1 ? 0 : currentIdx + 1;
-  //       setCurrentIdx(newIdx);
-  //       console.log(currentIdx, "after pass", newIdx, "nIdx");
-  //     }, 2000);
-  //     return () => clearTimeout(iv);
-  //   }
-  // });
 
   return (
     <div
@@ -183,7 +166,7 @@ function Swiper({
               <li
                 key={idx}
                 className={`swiper-indicator-item ${
-                  currentIdx === idx ? "active" : ""
+                  currentIdx.current === idx ? "active" : ""
                 }`}
                 onClick={() => indicatorOnClick(idx)}
                 data-testid="indicator"
@@ -197,7 +180,7 @@ function Swiper({
               id="textBox"
               className="text-box"
               ref={textBox}
-              key={`desc-${currentIdx}`}
+              key={`desc-${currentIdx.current}`}
             >
               {sliderContent}
             </p>
@@ -207,7 +190,12 @@ function Swiper({
         <span
           className={`swiper-indicator-numbers swiper-indicator-numbers-${layout}`}
         >
-          {`${currentIdx + 1 < 10 ? `0${currentIdx + 1}` : currentIdx + 1} `}/
+          {`${
+            currentIdx.current + 1 < 10
+              ? `0${currentIdx.current + 1}`
+              : currentIdx.current + 1
+          } `}
+          /
           {` ${
             swiperItems.length < 10
               ? `0${swiperItems.length}`

@@ -10,8 +10,6 @@
 }
 
 .swiper-wrapper-center {
-
-  justify-content: center;
   flex-flow: column nowrap;
   margin-left: auto;
   margin-right: auto;
@@ -92,7 +90,7 @@
   padding: 0;
   font-size: 1.25rem;
   transform: rotate(270deg);
-  position: relative;
+  position: absolute;
   font-style: italic;
   color: #444;
   line-height: 1.6rem;
@@ -100,7 +98,7 @@
 
 .swiper-indicator-numbers-center {
   left: -50px;
-  top: -200px;
+  top: 60%;
 }
 
 .swiper-indicator-numbers-right {
